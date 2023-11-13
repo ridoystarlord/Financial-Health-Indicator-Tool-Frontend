@@ -1,9 +1,10 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
 import LoginForm from "./components/LoginForm";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import RegisterForm from "./components/RegisterForm";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Analyze from "./components/Analyze";
 
 function App() {
   const router = createBrowserRouter([
@@ -17,11 +18,24 @@ function App() {
     },
     {
       path: "/dashboard",
-      element: (
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      ),
+      children: [
+        {
+          path: "",
+          element: (
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "history",
+          element: (
+            <ProtectedRoute>
+              <Analyze />
+            </ProtectedRoute>
+          ),
+        },
+      ],
     },
   ]);
   return <RouterProvider router={router} />;

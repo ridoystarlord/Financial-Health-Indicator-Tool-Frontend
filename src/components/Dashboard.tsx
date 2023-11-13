@@ -1,16 +1,13 @@
 import { useQuery } from "@apollo/client";
+import { ApexOptions } from "apexcharts";
 import { useEffect, useState } from "react";
-import { GET_COMPANY_HEALTH_SCORE } from "../mutations/company";
-import { getToken } from "../utils/common";
-import BudgetForm from "./MonthlyForm";
-import { Modal } from "./Modal";
 import ReactApexChart from "react-apexcharts";
 import { Link } from "react-router-dom";
-import { ApexOptions } from "apexcharts";
+import { GET_COMPANY_HEALTH_SCORE } from "../mutations/company";
+import { getToken } from "../utils/common";
 
 const Dashboard = () => {
   const token = getToken();
-  const [showModal, setShowModal] = useState<boolean>(false);
   const { data } = useQuery(GET_COMPANY_HEALTH_SCORE, {
     context: {
       headers: {
@@ -52,9 +49,6 @@ const Dashboard = () => {
       horizontalAlign: "left",
     },
   });
-  const handleClose = () => {
-    setShowModal(false);
-  };
   useEffect(() => {
     if (data && data?.getCompanyHealthData?.length) {
       const healthScoreData = [];
@@ -76,7 +70,7 @@ const Dashboard = () => {
       <div className="flex h-screen">
         {/* Left Sidebar */}
         <div className="w-1/8 bg-slate-800 text-white p-8">
-          <h2 className="text-2xl font-bold mb-8">Your Dashboard</h2>
+          <h2 className="text-2xl font-bold mb-8">FHS</h2>
           <nav>
             <ul>
               <li className="mb-2">
@@ -89,10 +83,10 @@ const Dashboard = () => {
               </li>
               <li className="mb-2">
                 <Link
-                  to="/add-monthly-data"
+                  to="/dashboard/history"
                   className="text-gray-300 hover:text-white"
                 >
-                  History
+                  Analyze
                 </Link>
               </li>
             </ul>
@@ -103,11 +97,12 @@ const Dashboard = () => {
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Title Bar */}
           <div className="bg-slate-800 text-white  p-8">
-            <h1 className="text-3xl font-bold">Dashboard Title</h1>
+            <h1 className="text-3xl font-bold">Dashboard</h1>
             {/* Add any other title bar content here */}
           </div>
 
           {/* Middle Content */}
+
           <div className="flex-1 overflow-x-hidden overflow-y-auto p-4">
             <ReactApexChart
               options={options}
@@ -118,9 +113,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <Modal show={showModal} handleClose={handleClose}>
-        <BudgetForm />
-      </Modal>
     </>
   );
 };

@@ -1,9 +1,11 @@
 import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { REGISTER_USER } from "../mutations/user";
+import { getToken } from "../utils/common";
 
 const schema = z.object({
   name: z.string().min(1, "Name is Required"),
@@ -21,6 +23,7 @@ const defaultValues: FormData = {
 };
 
 const RegisterForm: React.FC = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -43,6 +46,13 @@ const RegisterForm: React.FC = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   return (
     <div className="bg-gray-100 h-screen flex items-center justify-center">

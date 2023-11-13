@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LOGIN_USER } from "../mutations/user";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { setToken } from "../utils/common";
+import { getToken, setToken } from "../utils/common";
 
 const schema = z.object({
   email: z.string().email().min(1, "Email is Required"),
@@ -38,6 +38,13 @@ const LoginForm: React.FC = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   return (
     <div className="bg-gray-100 h-screen flex items-center justify-center">

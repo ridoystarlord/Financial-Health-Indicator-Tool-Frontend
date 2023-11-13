@@ -17,7 +17,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const BudgetForm: React.FC = () => {
+const MonthlyForm: React.FC = () => {
   const token = getToken();
   const {
     handleSubmit,
@@ -160,4 +160,4 @@ const BudgetForm: React.FC = () => {
   );
 };
 
-export default BudgetForm;
+export default MonthlyForm;
