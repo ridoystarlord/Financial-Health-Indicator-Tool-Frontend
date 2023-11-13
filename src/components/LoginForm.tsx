@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LOGIN_USER } from "../mutations/user";
 import { useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+import { setToken } from "../utils/common";
 
 const schema = z.object({
   email: z.string().email().min(1, "Email is Required"),
@@ -20,7 +22,7 @@ const LoginForm: React.FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
+  const navigate = useNavigate();
   const [loginUser] = useMutation(LOGIN_USER);
 
   const onSubmit = async (data: FormData) => {
@@ -28,7 +30,10 @@ const LoginForm: React.FC = () => {
       const result = await loginUser({
         variables: { ...data },
       });
-      console.log(result.data);
+      if (result.data.LoginUser.success) {
+        setToken(result.data.LoginUser.token);
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.error(error);
     }

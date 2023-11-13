@@ -3,10 +3,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import { API_BASE_URL } from "./config/index.ts";
 
 const client = new ApolloClient({
   // uri: "https://financial-health-score-backend.onrender.com/graphql",
-  uri: "http://localhost:8000/graphql",
+  uri: `${API_BASE_URL}/graphql`,
   cache: new InMemoryCache(),
 });
 
